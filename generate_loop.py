@@ -3,15 +3,14 @@ import numpy
 from mpl_toolkits.mplot3d import Axes3D
 import math
 
-
-def generate_loop(diameter,length,rotation,nturns,npts):
+def generate_loop(diameter,height,rotation,nturns,npts):
+    backfire = 1
     
     radius = diameter/2
-    height = 1* math.sqrt(math.pow(length-diameter,2) - math.pow(2*math.pi*radius*nturns,2))
-    
-    wh = diameter/height
-
-    #print(wh)
+    dir = -1
+    if backfire:
+        dir = 1
+        height = -height
 
     h1_x = [0] * npts
     h1_y = [0] * npts
@@ -21,10 +20,10 @@ def generate_loop(diameter,length,rotation,nturns,npts):
     h2_z = h1_z
 
     for i in range(0,npts):
-        h1_x[i] = radius * math.cos(-i*2*math.pi*nturns/(npts-1) + rotation)
-        h1_y[i] = radius * math.sin(-i*2*math.pi*nturns/(npts-1) + rotation)
-        h2_x[i] = radius * math.cos(-i*2*math.pi*nturns/(npts-1) + math.pi + rotation)
-        h2_y[i] = radius * math.sin(-i*2*math.pi*nturns/(npts-1) + math.pi + rotation)
+        h1_x[i] = radius * math.cos(dir*i*2*math.pi*nturns/(npts-1) + rotation)
+        h1_y[i] = radius * math.sin(dir*i*2*math.pi*nturns/(npts-1) + rotation)
+        h2_x[i] = radius * math.cos(dir*i*2*math.pi*nturns/(npts-1) + math.pi + rotation)
+        h2_y[i] = radius * math.sin(dir*i*2*math.pi*nturns/(npts-1) + math.pi + rotation)
 
     h1_x = h1_x + [0] + list(reversed(h2_x))
     h1_y = h1_y + [0] + list(reversed(h2_y))
