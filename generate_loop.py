@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy
 from mpl_toolkits.mplot3d import Axes3D
 import math
+import numpy
 
 def generate_loop(diameter,height,rotation,nturns,npts):
     backfire = 1
@@ -43,10 +44,10 @@ def generate_loop(diameter,height,rotation,nturns,npts):
     return h
 
 """
-t = generate_loop(30,100,0,0.5,10)
+loop1 = numpy.array(generate_loop(30,100,0,0.5,10))
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
-plt.plot(t[0],t[1],t[2], label = "1")
+plt.plot(loop1[:,0],loop1[:,1],loop1[:,2], label = "1")
 plt.show()
 """

@@ -148,7 +148,7 @@ def return_loss_of_antenna(freq,diam1,diam2,l1,l2,nturn,wdiam):
 
 freqmhz = 1575
 wire_diameter = 0.001
-wh_ratio = 0.4
+wh_ratio = 0.25
 wavelength = 3e8 / (freqmhz * 1e6)
 nturns = 0.5
 
@@ -158,7 +158,7 @@ bnds = ((wavelength/10,wavelength/2),(wavelength/10,wavelength/2))
 
 def f1(x):
     print(x)
-    res = return_loss_of_antenna(1575,x[0],x[0],x[1],x[1],wh_ratio,wire_diameter)
+    res = return_loss_of_antenna(freqmhz,x[0],x[0],x[1],x[1],nturns,wire_diameter)
     print(res)
     return res
 
@@ -181,16 +181,17 @@ height1 = sol.x[1]
 
 def f2(x):
     print(x)
-    res = max_rhcp_gain_of_antenna(1575,x[0],x[1],x[2],x[3],wh_ratio,wire_diameter)
+    res = max_rhcp_gain_of_antenna(freqmhz,x[0],x[1],x[2],x[3],nturns,wire_diameter)
     print(res)
     return -res
 
-bnds = ((diam1,1.5*diam1),(0.5*diam1,diam1),(height1,1.5*height1),(0.5*height1,height1))
+bnds = ((diam1,1.2*diam1),(0.8*diam1,diam1),(height1,1.2*height1),(0.8*height1,height1))
 x0 = [1.01*diam1,0.99*diam1,1.01*height1,0.99*height1]
 
 sol = minimize(f2,x0,method='SLSQP',bounds=bnds,options={'disp': 'true'})
 
 print(sol)
 print("calculated wavelength : {0}".format((math.sqrt((diam1*math.pi*nturns)**2 + (height1)**2)+diam1)*2))
-
-generate_antenna_file(1575,sol.x[0],sol.x[1],sol.x[2],sol.x[3],wh_ratio,wire_diameter)
+print("diam1 : {0}".format(diam1))
+print("height1 : {0}".format(height1))
+generate_antenna_file(freqmhz,sol.x[0],sol.x[1],sol.x[2],sol.x[3],nturns,wire_diameter)
